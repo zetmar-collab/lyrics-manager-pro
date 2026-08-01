@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Wyniki budowania (aplikacja i instalator trafiaja do wydan na GitHubie,
+# nie do historii repozytorium)
+build/
+dist/
+*.spec.bak
+
+# Ikona jest generowana skryptem tools/make_icon.py przy budowaniu
+assets/app.ico
+
+# Utwory uzytkownika
+*.lyr
+
+# Edytory i system
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini

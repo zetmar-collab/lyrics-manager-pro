@@ -1,0 +1,77 @@
+Lyrics Manager Pro - warsztat autora tekstow piosenek
+=====================================================
+
+Co instalujesz
+
+  Program jest jednym plikiem wykonywalnym - ma w sobie wszystkie potrzebne
+  moduly. Nie musisz instalowac Pythona ani zadnych bibliotek.
+
+  Instalacja domyslnie odbywa sie tylko dla Twojego konta i nie wymaga praw
+  administratora. Jesli chcesz zainstalowac program dla wszystkich uzytkownikow
+  komputera, wybierz te opcje w nastepnym kroku.
+
+Slowniki pisowni
+
+  Slownikow nie ma w instalatorze, poniewaz sa objete wlasnymi licencjami.
+  Pobierzesz je w programie jednym kliknieciem: panel Pisownia, przycisk
+  "Slowniki...". Do wyboru polski (pl_PL) oraz angielski (en_US, en_GB),
+  prosto z oficjalnego repozytorium slownikow LibreOffice.
+
+  Jesli masz juz slowniki z LibreOffice, program je znajdzie sam - w tym samym
+  oknie jest przycisk "Znajdz slowniki LibreOffice".
+
+Silniki AI (opcjonalne)
+
+  Program dziala w pelni bez AI. Jesli chcesz z niej korzystac, masz dwie drogi:
+
+  - Ollama - modele uruchamiane lokalnie na Twoim komputerze, tekst nigdzie nie
+    wychodzi. Wymaga osobnej instalacji ze strony ollama.com.
+  - OpenRouter - modele w chmurze. Wymaga wlasnego klucza API z openrouter.ai.
+
+  Zadnego z nich nie instaluje ten instalator.
+
+Twoje dane
+
+  Ustawienia, historia zmian, slowniki i wlasny slownik pisowni zapisywane sa
+  w katalogu %APPDATA%\LyricsManagerPro i nie sa usuwane przy aktualizacji.
+
+
+--------------------------------------------------------------------------
+
+
+Lyrics Manager Pro - the songwriter's workbench
+===============================================
+
+What you are installing
+
+  The program is a single executable with every required module inside. You do
+  not need to install Python or any libraries.
+
+  By default it installs for your account only and needs no administrator
+  rights. To install it for all users of this computer, choose that option in
+  the next step.
+
+Spelling dictionaries
+
+  Dictionaries are not part of the installer because they carry their own
+  licences. You download them inside the app with one click: the Spelling
+  panel, "Dictionaries..." button. Polish (pl_PL) and English (en_US, en_GB)
+  are available, straight from the official LibreOffice dictionary repository.
+
+  If you already have LibreOffice dictionaries, the program can find them - the
+  same window has a "Find LibreOffice dictionaries" button.
+
+AI engines (optional)
+
+  The program works fully without AI. If you want it, there are two routes:
+
+  - Ollama - models running locally on your computer; your text never leaves
+    it. Requires a separate install from ollama.com.
+  - OpenRouter - cloud models. Requires your own API key from openrouter.ai.
+
+  This installer installs neither of them.
+
+Your data
+
+  Settings, change history, dictionaries and your personal spelling dictionary
+  are stored in %APPDATA%\LyricsManagerPro and are not removed on update.

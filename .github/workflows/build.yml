@@ -1,0 +1,83 @@
+name: Build
+
+# Buduje aplikacje i instalator na Windows. Przy tagu v* dokleja pliki do
+# wydania na GitHubie; przy zwyklym pushu zostawia je jako artefakty przebiegu.
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Zaleznosci
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller pillow
+
+      - name: Ikona
+        run: python tools/make_icon.py
+
+      # Testy analityczne i pisowni nie potrzebuja pulpitu. Testy interfejsu
+      # (test_ui_smoke, test_shortcuts_help) tworza prawdziwe okno Tk, wiec
+      # uruchamiamy je tylko lokalnie - na maszynie CI bywaja niestabilne.
+      - name: Testy
+        run: |
+          python tests/test_analysis.py
+          python tests/test_spelling.py
+
+      - name: Budowa aplikacji
+        run: python -m PyInstaller --noconfirm --clean LyricsManagerPro.spec
+
+      - name: Sprawdzenie zbudowanego pliku
+        run: |
+          .\dist\LyricsManagerPro.exe --selftest selftest.txt
+          Start-Sleep -Seconds 20
+          Get-Content selftest.txt
+          if (-not (Select-String -Path selftest.txt -Pattern '\[OK\]   spylls' -Quiet)) {
+            throw "Brak silnika pisowni w zbudowanym pliku"
+          }
+        shell: pwsh
+
+      - name: Inno Setup
+        run: choco install innosetup --no-progress -y
+
+      - name: Budowa instalatora
+        run: powershell -ExecutionPolicy Bypass -File installer\build_installer.ps1
+        shell: cmd
+
+      - name: Artefakty
+        uses: actions/upload-artifact@v4
+        with:
+          name: LyricsManagerPro
+          path: |
+            dist/LyricsManagerPro.exe
+            dist/LyricsManagerPro-Setup-*.exe
+          retention-days: 30
+
+      - name: Wydanie
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/LyricsManagerPro.exe
+            dist/LyricsManagerPro-Setup-*.exe
+          generate_release_notes: true
