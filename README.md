@@ -62,7 +62,9 @@ powershell -ExecutionPolicy Bypass -File build.ps1
 ```
 
 Skrypt instaluje zależności, generuje ikonę, uruchamia wszystkie testy i buduje
-`dist\LyricsManagerPro.exe` (ok. 18 MB, jeden plik, bez konsoli).
+`dist\LyricsManagerPro.exe` (jeden plik, bez konsoli). Rozmiar zalezy od
+srodowiska budowania: czysta instalacja Pythona daje ok. 14 MB, komputer
+z wieloma pakietami w site-packages nieco wiecej.
 
 **Zbudowanie instalatora:**
 
@@ -72,8 +74,7 @@ powershell -ExecutionPolicy Bypass -File installer\build_installer.ps1
 
 Wymaga [Inno Setup 6](https://jrsoftware.org/isdl.php). Skrypt sam znajdzie
 kompilator — również wtedy, gdy Inno Setup jest zainstalowany tylko dla
-bieżącego użytkownika. Wynik: `dist\LyricsManagerPro-Setup-1.0.0.exe`
-(ok. 19,5 MB).
+bieżącego użytkownika. Wynik: `dist\LyricsManagerPro-Setup-1.0.0.exe` (ok. 16 MB).
 
 Budowanie jest też zautomatyzowane w GitHub Actions
 ([.github/workflows/build.yml](.github/workflows/build.yml)) — tag `v*`
@@ -411,7 +412,7 @@ Kod na licencji [MIT](LICENSE) — możesz go używać, zmieniać i rozpowszechn
 także komercyjnie, zachowując informację o autorstwie.
 
 Program korzysta z bibliotek CustomTkinter (MIT), requests (Apache 2.0)
-i spylls (MIT). Słowniki pisowni nie są częścią programu — pobierane są na
+i spylls (MIT) — pełna lista w [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md). Słowniki pisowni nie są częścią programu — pobierane są na
 żądanie z repozytorium LibreOffice i pozostają na swoich licencjach.
 
 ## Autor

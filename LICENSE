@@ -19,21 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
-
----
-
-Third-party components
-----------------------
-
-This program bundles the following open-source components:
-
-  CustomTkinter  - MIT License        - https://github.com/TomSchimansky/CustomTkinter
-  requests       - Apache License 2.0 - https://github.com/psf/requests
-  spylls         - MIT License        - https://github.com/zverok/spylls
-  Python         - PSF License        - https://www.python.org
-
-Spelling dictionaries are NOT bundled with this program. They are downloaded
-on demand from the LibreOffice dictionary repository and remain under their own
-licences (LGPL / MPL / CC-BY-SA depending on the language). See
-https://github.com/LibreOffice/dictionaries for details.
