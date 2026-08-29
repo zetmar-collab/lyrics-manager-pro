@@ -22,6 +22,7 @@ from lyrics_manager.ui.app import LyricsManagerApp
 from lyrics_manager.ui.help_window import HelpWindow
 
 FAILURES: list[str] = []
+SKIPPED: list[str] = []
 
 
 def check(label: str, actual, expected) -> None:
@@ -163,6 +164,22 @@ check_true("przelacznik motywu zmienia motyw", theme.is_dark() != before_dark)
 app._toggle_theme()
 check("powrot motywu", theme.is_dark(), before_dark)
 
+# Slownik pisowni musi pasowac do jezyka tekstu. Zapisany wybor z innego
+# jezyka nie moze sie przykleic - inaczej angielski tekst bylby sprawdzany
+# polskim slownikiem i prawie kazde slowo wyszloby jako blad.
+from lyrics_manager.spelling import installed_codes as _installed_codes
+
+_codes = _installed_codes()
+if "pl_PL" in _codes and "en_US" in _codes:
+    app.settings.set("spell_dict_en", "pl_PL")      # celowo bledny wpis
+    app.set_text_language("en")
+    check("slownik nie przykleja sie z innego jezyka", app.spell_code(), "en_US")
+    app.settings.set("spell_dict_en", "")
+    app.set_text_language("pl")
+    check("slownik dla polskiego", app.spell_code(), "pl_PL")
+else:
+    SKIPPED.append("brak obu slownikow - pomijam test doboru slownika")
+
 # wstawianie sekcji skrotem
 before = app.get_text()
 app._insert_section(tr("sec.chorus"))
@@ -241,6 +258,9 @@ except Exception:  # noqa: BLE001
 app.destroy()
 
 # --- wynik ----------------------------------------------------------------
+
+for note in SKIPPED:
+    print("POMINIETO:", note)
 
 if FAILURES:
     print(f"NIEPOWODZENIA ({len(FAILURES)}):")

@@ -516,11 +516,17 @@ class LyricsManagerApp(ctk.CTk):
     # ==================================================================
 
     def spell_code(self) -> str | None:
-        """Kod slownika uzywanego dla biezacego jezyka tekstu."""
+        """Kod slownika uzywanego dla biezacego jezyka tekstu.
+
+        Zapisany wybor honorujemy tylko wtedy, gdy naprawde dotyczy tego
+        jezyka. Bez tego warunku raz zapisany slownik potrafil zostac przy
+        drugim jezyku i tekst angielski byl sprawdzany polskim slownikiem -
+        wtedy prawie kazde slowo wychodzi jako blad.
+        """
         lang = self.text_language()
         codes = installed_codes()
         saved = self.config_store.get(f"spell_dict_{lang}", "")
-        if saved and saved in codes:
+        if saved and saved in codes and saved.lower().startswith(lang.lower()):
             return saved
         return default_code_for(lang, codes)
 

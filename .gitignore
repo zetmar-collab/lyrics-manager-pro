@@ -13,6 +13,7 @@ dist/
 # Ikona i grafiki sklepu sa generowane skryptami z tools/ przy budowaniu
 assets/app.ico
 msix/Assets/
+store-screenshots/
 
 # Utwory uzytkownika
 *.lyr
