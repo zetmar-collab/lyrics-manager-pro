@@ -21,11 +21,13 @@ ROOT = Path(__file__).resolve().parent.parent
 MANIFEST = ROOT / "msix" / "AppxManifest.xml"
 ASSETS = ROOT / "msix" / "Assets"
 
-# Dane z rezerwacji w Partner Center - nie zmieniaj bez zmiany rezerwacji.
-EXPECTED_NAME = "MarekZettel-zetmar.LyricsMenagerPro"
+# Dane z rezerwacji w Partner Center (Zarzadzanie produktem -> Tozsamosc
+# produktu). Nie zmieniaj tego bez zmiany rezerwacji - Partner Center odrzuca
+# pakiet, ktorego Identity nie zgadza sie z zarezerwowana nazwa.
+EXPECTED_NAME = "MarekZettel-zetmar.LyricsManagerPro"
 EXPECTED_PUBLISHER = "CN=15A53D32-C868-48EE-B700-5DBB5449CA1B"
 EXPECTED_PUBLISHER_DISPLAY = "Marek Zettel - zetmar"
-EXPECTED_PFN = "MarekZettel-zetmar.LyricsMenagerPro_411qrz2m02jw4"
+EXPECTED_PFN = "MarekZettel-zetmar.LyricsManagerPro_411qrz2m02jw4"
 
 NS = {
     "": "http://schemas.microsoft.com/appx/manifest/foundation/windows10",

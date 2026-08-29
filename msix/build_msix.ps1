@@ -17,7 +17,11 @@ param(
     [switch]$Sign,
     [string]$PfxPath = "",
     [string]$PfxPassword = "",
-    [string]$Version = "1.0.0.0"
+    [string]$Version = "1.0.0.0",
+    # Nazwa musi byc identyczna z ta w Partner Center: Zarzadzanie produktem ->
+    # Tozsamosc produktu -> Package/Identity/Name. Pusta wartosc = bierz to,
+    # co jest w manifescie.
+    [string]$IdentityName = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -75,7 +79,10 @@ Copy-Item (Join-Path $root "msix\AppxManifest.xml") $layout -Force
 $manifestPath = Join-Path $layout "AppxManifest.xml"
 $xml = [xml](Get-Content $manifestPath)
 $xml.Package.Identity.Version = $Version
+if ($IdentityName) { $xml.Package.Identity.Name = $IdentityName }
 $xml.Save($manifestPath)
+
+Write-Host "Identity: $($xml.Package.Identity.Name)" -ForegroundColor Cyan
 
 Write-Host "Uklad: $layout ($([math]::Round((Get-ChildItem $layout -Recurse -File | Measure-Object Length -Sum).Sum/1MB,1)) MB)" -ForegroundColor Cyan
 

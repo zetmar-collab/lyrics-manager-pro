@@ -8,27 +8,34 @@ Wszystko, co potrzebne do wydania Lyrics Manager Pro przez sklep Windows.
 
 | Pole | Wartość |
 |---|---|
-| Package/Identity/Name | `MarekZettel-zetmar.LyricsMenagerPro` |
+| Package/Identity/Name | `MarekZettel-zetmar.LyricsManagerPro` |
 | Package/Identity/Publisher | `CN=15A53D32-C868-48EE-B700-5DBB5449CA1B` |
 | Package/Properties/PublisherDisplayName | `Marek Zettel - zetmar` |
-| Package Family Name | `MarekZettel-zetmar.LyricsMenagerPro_411qrz2m02jw4` |
+| Package Family Name | `MarekZettel-zetmar.LyricsManagerPro_411qrz2m02jw4` |
 | Package SID | `S-1-15-2-2570101063-1518503407-338627846-650014356-1440999148-3067162686-93397780` |
 | Identyfikator w Store | `9MVSV3BRHFTV` |
 | Adres w sklepie | https://apps.microsoft.com/detail/9MVSV3BRHFTV |
 
-> **Uwaga o nazwie.** W zarezerwowanej nazwie jest literówka: `LyricsMenagerPro`
-> zamiast `LyricsManagerPro`. Identity Name musi się zgadzać z rezerwacją co do
-> znaku, więc manifest używa jej dokładnie tak. Nazwa widoczna dla użytkowników
-> (`DisplayName`) jest poprawna: **Lyrics Manager Pro** — i tylko ona pokazuje
-> się w sklepie, w menu Start i na pasku zadań. Literówka siedzi wyłącznie
-> w technicznym identyfikatorze, którego nikt nie ogląda.
+> **Nazwa produktu.** Identity Name musi zgadzac sie co do znaku z tym, co
+> Partner Center pokazuje w **Zarzadzanie produktem -> Tozsamosc produktu**,
+> w polu `Package/Identity/Name`. Jesli sie rozjedzie, Partner Center odrzuci
+> pakiet i wysylka nie ruszy.
 >
-> Jeśli chcesz to naprawić, zarezerwuj w Partner Center nową nazwę
-> (`LyricsManagerPro`), ustaw ją jako główną i podmień `Identity/Name`
-> w `AppxManifest.xml`. Uwaga: zmiana Identity to z punktu widzenia Windows
-> **inna aplikacja** — użytkownicy, którzy zainstalowali starą, nie dostaną
-> aktualizacji. Przed pierwszą publikacją zmiana jest bezkosztowa, po
-> publikacji już nie.
+> Pierwsza rezerwacja zawierala literowke (`LyricsMenagerPro`). Po jej
+> poprawieniu w Partner Center pakiet uzywa juz `LyricsManagerPro`.
+>
+> Skrot wydawcy w Package Family Name (`411qrz2m02jw4`) liczy sie wylacznie
+> z pola `Publisher`, wiec zmiana nazwy go nie rusza.
+>
+> Gdyby Partner Center wygenerowal inna nazwe niz zakladamy, nie trzeba
+> ruszac manifestu - wystarczy przebudowac z parametrem:
+>
+> ```
+> powershell -File msix\build_msix.ps1 -IdentityName "MarekZettel-zetmar.CosInnego"
+> ```
+>
+> Pamietaj wtedy poprawic tez `EXPECTED_NAME` i `EXPECTED_PFN`
+> w `tests/test_msix.py`.
 
 Poprawność tożsamości jest sprawdzana automatycznie: `tests/test_msix.py` liczy
 Package Family Name z manifestu i porównuje z powyższym.

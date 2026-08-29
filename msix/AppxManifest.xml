@@ -3,9 +3,10 @@
 <!--
   Manifest pakietu MSIX dla Microsoft Store.
 
-  Identity musi sie zgadzac co do znaku z rezerwacja nazwy w Partner Center -
-  stad "LyricsMenagerPro". Nazwa pokazywana uzytkownikom (DisplayName) jest
-  poprawna: "Lyrics Manager Pro".
+  Identity musi sie zgadzac co do znaku z rezerwacja nazwy w Partner Center.
+  Dokladna wartosc znajdziesz w Partner Center: Zarzadzanie produktem ->
+  Tozsamosc produktu, pole "Package/Identity/Name". Jesli sie rozjedzie,
+  Partner Center odrzuci pakiet przy wysylce.
 
   Aplikacja jest klasycznym programem Win32 spakowanym w MSIX (Desktop Bridge),
   dlatego EntryPoint to Windows.FullTrustApplication, a w Capabilities jest
@@ -21,7 +22,7 @@
   IgnorableNamespaces="uap rescap">
 
   <Identity
-    Name="MarekZettel-zetmar.LyricsMenagerPro"
+    Name="MarekZettel-zetmar.LyricsManagerPro"
     Publisher="CN=15A53D32-C868-48EE-B700-5DBB5449CA1B"
     Version="1.0.0.0"
     ProcessorArchitecture="x64" />

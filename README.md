@@ -422,7 +422,7 @@ widoczne dla `.exe` i odwrotnie.
 Pakiet MSIX buduje się osobnym skryptem:
 
 ```bash
-powershell -ExecutionPolicy Bypass -File msixuild_msix.ps1
+powershell -ExecutionPolicy Bypass -File msix\build_msix.ps1
 ```
 
 Wynik: `dist\LyricsManagerPro-1.0.0.0.msix` (ok. 15,6 MB). Wymaga Windows SDK.
