@@ -1,7 +1,7 @@
 name: Build
 
-# Buduje aplikacje i instalator na Windows. Przy tagu v* dokleja pliki do
-# wydania na GitHubie; przy zwyklym pushu zostawia je jako artefakty przebiegu.
+# Buduje aplikacje, instalator i pakiet MSIX na Windows. Przy tagu v* dokleja
+# pliki do wydania na GitHubie; przy zwyklym pushu zostawia je jako artefakty.
 
 on:
   push:
@@ -33,16 +33,19 @@ jobs:
           pip install -r requirements.txt
           pip install pyinstaller pillow
 
-      - name: Ikona
-        run: python tools/make_icon.py
+      - name: Ikona i grafiki sklepu
+        run: |
+          python tools/make_icon.py
+          python tools/make_store_assets.py
 
-      # Testy analityczne i pisowni nie potrzebuja pulpitu. Testy interfejsu
-      # (test_ui_smoke, test_shortcuts_help) tworza prawdziwe okno Tk, wiec
-      # uruchamiamy je tylko lokalnie - na maszynie CI bywaja niestabilne.
+      # Testy analityczne, pisowni i pakietu nie potrzebuja pulpitu. Testy
+      # interfejsu (test_ui_smoke, test_shortcuts_help) tworza prawdziwe okno
+      # Tk, wiec uruchamiamy je tylko lokalnie - na CI bywaja niestabilne.
       - name: Testy
         run: |
           python tests/test_analysis.py
           python tests/test_spelling.py
+          python tests/test_msix.py
 
       - name: Budowa aplikacji
         run: python -m PyInstaller --noconfirm --clean LyricsManagerPro.spec
@@ -61,8 +64,34 @@ jobs:
         run: choco install innosetup --no-progress -y
 
       - name: Budowa instalatora
-        run: powershell -ExecutionPolicy Bypass -File installer\build_installer.ps1
+        run: powershell -ExecutionPolicy Bypass -File installer/build_installer.ps1
         shell: cmd
+
+      # Pakiet dla Microsoft Store. Windows SDK jest na obrazie runnera, ale
+      # gdyby zniknal, lepiej pominac ten krok niz zablokowac caly build.
+      - name: Czy jest Windows SDK
+        id: sdk
+        run: |
+          $kits = Join-Path ${env:ProgramFiles(x86)} 'Windows Kits/10/bin'
+          $tool = Get-ChildItem $kits -Recurse -Filter makeappx.exe -ErrorAction SilentlyContinue |
+                  Select-Object -First 1
+          if ($tool) {
+            "found=true" >> $env:GITHUB_OUTPUT
+            Write-Host "makeappx: $($tool.FullName)"
+          } else {
+            "found=false" >> $env:GITHUB_OUTPUT
+            Write-Warning "Brak Windows SDK - pomijam pakiet MSIX"
+          }
+        shell: pwsh
+
+      - name: Pakiet MSIX
+        if: steps.sdk.outputs.found == 'true'
+        run: powershell -ExecutionPolicy Bypass -File msix/build_msix.ps1
+        shell: cmd
+
+      - name: Sprawdzenie pakietu MSIX
+        if: steps.sdk.outputs.found == 'true'
+        run: python tests/test_msix.py
 
       - name: Artefakty
         uses: actions/upload-artifact@v7
@@ -71,11 +100,14 @@ jobs:
           path: |
             dist/LyricsManagerPro.exe
             dist/LyricsManagerPro-Setup-*.exe
+            dist/LyricsManagerPro-*.msix
           retention-days: 30
 
       # Uwaga: przy tagu ten krok podmienia pliki juz dolaczone do wydania.
       # Wersja z CI jest mniejsza od zbudowanej lokalnie, bo runner ma czyste
       # srodowisko Pythona - i to ona jest wersja odniesienia.
+      # Pakiet .msix nie trafia do wydania: bez podpisu i tak nie da sie go
+      # zainstalowac, a do sklepu wysyla sie go recznie przez Partner Center.
       - name: Wydanie
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v3

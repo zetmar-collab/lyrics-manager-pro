@@ -13,7 +13,12 @@ Ollama (local).*
 
 ## Instalacja
 
-Pobierz **LyricsManagerPro-Setup-1.0.0.exe** z sekcji
+Program będzie dostępny w **Microsoft Store** — najprościej stamtąd, bo
+aktualizacje przychodzą same:
+
+> https://apps.microsoft.com/detail/9MVSV3BRHFTV
+
+Poza sklepem pobierz **LyricsManagerPro-Setup-1.0.0.exe** z sekcji
 [Releases](https://github.com/zetmar-collab/lyrics-manager-pro/releases)
 i uruchom.
 
@@ -355,12 +360,17 @@ tests/
   test_analysis.py   testy modułów analitycznych
   test_spelling.py   testy sprawdzania pisowni i katalogu słowników
   test_shortcuts_help.py  testy skrótów, kolizji z Tk i instrukcji obsługi
+  test_msix.py       testy tożsamości pakietu MSIX
   test_ui_smoke.py   test dymny interfejsu (buduje i zamyka okno bez udziału użytkownika)
 tools/make_icon.py   generowanie assets/app.ico
 installer/
   LyricsManagerPro.iss  skrypt instalatora (Inno Setup)
   build_installer.ps1   budowanie instalatora
   info_before.txt       tekst powitalny instalatora PL/EN
+msix/
+  AppxManifest.xml      manifest pakietu dla Microsoft Store
+  build_msix.ps1        budowanie pakietu .msix
+  README-STORE.md       dane rezerwacji, instrukcja wysyłki, treści listingu
 LyricsManagerPro.spec konfiguracja PyInstallera
 build.ps1            pełny build: zależności → ikona → testy → .exe
 ```
@@ -371,6 +381,7 @@ build.ps1            pełny build: zależności → ikona → testy → .exe
 python tests\test_analysis.py
 python tests\test_spelling.py
 python tests\test_shortcuts_help.py
+python tests\test_msix.py
 python tests\test_ui_smoke.py
 ```
 
@@ -406,6 +417,28 @@ widoczne dla `.exe` i odwrotnie.
 
 ---
 
+## Wersja dla Microsoft Store
+
+Pakiet MSIX buduje się osobnym skryptem:
+
+```bash
+powershell -ExecutionPolicy Bypass -File msixuild_msix.ps1
+```
+
+Wynik: `dist\LyricsManagerPro-1.0.0.0.msix` (ok. 15,6 MB). Wymaga Windows SDK.
+
+W wersji sklepowej aplikacja jest programem Win32 spakowanym w MSIX
+(Desktop Bridge, `runFullTrust`), dzięki czemu działa poza kontenerem
+AppContainer — inaczej połączenie z Ollamą na `localhost` byłoby zablokowane.
+
+Dane użytkownika trafiają wtedy do prywatnego magazynu pakietu, więc wersja ze
+sklepu i wersja z instalatora nie współdzielą ustawień ani słowników.
+
+Komplet informacji — dane rezerwacji, instrukcja wysyłki do Partner Center
+i gotowe treści listingu — jest w [msix/README-STORE.md](msix/README-STORE.md).
+
+---
+
 ## Licencja
 
 Kod na licencji [MIT](LICENSE) — możesz go używać, zmieniać i rozpowszechniać,
@@ -414,6 +447,12 @@ także komercyjnie, zachowując informację o autorstwie.
 Program korzysta z bibliotek CustomTkinter (MIT), requests (Apache 2.0)
 i spylls (MIT) — pełna lista w [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md). Słowniki pisowni nie są częścią programu — pobierane są na
 żądanie z repozytorium LibreOffice i pozostają na swoich licencjach.
+
+## Prywatność
+
+Program nie zbiera żadnych danych: nie ma kont, telemetrii ani analityki.
+Teksty zostają na Twoim komputerze. Jedyny wyjątek to świadome użycie AI
+w chmurze — szczegóły w [PRIVACY.md](PRIVACY.md).
 
 ## Autor
 

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  Manifest pakietu MSIX dla Microsoft Store.
+
+  Identity musi sie zgadzac co do znaku z rezerwacja nazwy w Partner Center -
+  stad "LyricsMenagerPro". Nazwa pokazywana uzytkownikom (DisplayName) jest
+  poprawna: "Lyrics Manager Pro".
+
+  Aplikacja jest klasycznym programem Win32 spakowanym w MSIX (Desktop Bridge),
+  dlatego EntryPoint to Windows.FullTrustApplication, a w Capabilities jest
+  runFullTrust. Dzieki temu dziala poza kontenerem AppContainer, co jest
+  konieczne, bo program laczy sie z Ollama na localhost - w AppContainerze
+  petla zwrotna jest blokowana.
+-->
+
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+  IgnorableNamespaces="uap rescap">
+
+  <Identity
+    Name="MarekZettel-zetmar.LyricsMenagerPro"
+    Publisher="CN=15A53D32-C868-48EE-B700-5DBB5449CA1B"
+    Version="1.0.0.0"
+    ProcessorArchitecture="x64" />
+
+  <Properties>
+    <DisplayName>Lyrics Manager Pro</DisplayName>
+    <PublisherDisplayName>Marek Zettel - zetmar</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+  </Properties>
+
+  <Dependencies>
+    <!-- Windows 10 2004 to najstarsza wersja, ktora wciaz dostaje aktualizacje -->
+    <TargetDeviceFamily Name="Windows.Desktop"
+                        MinVersion="10.0.19041.0"
+                        MaxVersionTested="10.0.26100.0" />
+  </Dependencies>
+
+  <Resources>
+    <Resource Language="pl-PL" />
+    <Resource Language="en-US" />
+  </Resources>
+
+  <Applications>
+    <Application Id="LyricsManagerPro"
+                 Executable="LyricsManagerPro.exe"
+                 EntryPoint="Windows.FullTrustApplication">
+
+      <uap:VisualElements
+        DisplayName="Lyrics Manager Pro"
+        Description="Warsztat autora tekstow piosenek: licznik sylab, analiza rymow, powtorzenia, czytelnosc, pisownia i asystent AI."
+        BackgroundColor="transparent"
+        Square150x150Logo="Assets\Square150x150Logo.png"
+        Square44x44Logo="Assets\Square44x44Logo.png">
+
+        <uap:DefaultTile
+          Wide310x150Logo="Assets\Wide310x150Logo.png"
+          Square310x310Logo="Assets\Square310x310Logo.png"
+          Square71x71Logo="Assets\Square71x71Logo.png">
+          <uap:ShowNameOnTiles>
+            <uap:ShowOn Tile="square150x150Logo" />
+            <uap:ShowOn Tile="wide310x150Logo" />
+            <uap:ShowOn Tile="square310x310Logo" />
+          </uap:ShowNameOnTiles>
+        </uap:DefaultTile>
+
+        <uap:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#2563EB" />
+      </uap:VisualElements>
+
+      <Extensions>
+        <!-- Skojarzenie plikow .lyr: podwojne klikniecie otwiera utwor -->
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="lyr">
+            <uap:DisplayName>Lyrics Manager Pro - tekst piosenki</uap:DisplayName>
+            <uap:Logo>Assets\Square44x44Logo.png</uap:Logo>
+            <uap:SupportedFileTypes>
+              <uap:FileType>.lyr</uap:FileType>
+            </uap:SupportedFileTypes>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+      </Extensions>
+
+    </Application>
+  </Applications>
+
+  <Capabilities>
+    <!-- program Win32 poza AppContainerem -->
+    <rescap:Capability Name="runFullTrust" />
+    <!-- pobieranie slownikow pisowni i polaczenie z OpenRouter -->
+    <Capability Name="internetClient" />
+    <!-- Ollama na tym komputerze albo na innym w sieci lokalnej -->
+    <Capability Name="privateNetworkClientServer" />
+  </Capabilities>
+
+</Package>

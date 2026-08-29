@@ -10,8 +10,9 @@ build/
 dist/
 *.spec.bak
 
-# Ikona jest generowana skryptem tools/make_icon.py przy budowaniu
+# Ikona i grafiki sklepu sa generowane skryptami z tools/ przy budowaniu
 assets/app.ico
+msix/Assets/
 
 # Utwory uzytkownika
 *.lyr
