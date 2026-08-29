@@ -21,13 +21,18 @@ ROOT = Path(__file__).resolve().parent.parent
 MANIFEST = ROOT / "msix" / "AppxManifest.xml"
 ASSETS = ROOT / "msix" / "Assets"
 
-# Dane z rezerwacji w Partner Center (Zarzadzanie produktem -> Tozsamosc
-# produktu). Nie zmieniaj tego bez zmiany rezerwacji - Partner Center odrzuca
-# pakiet, ktorego Identity nie zgadza sie z zarezerwowana nazwa.
-EXPECTED_NAME = "MarekZettel-zetmar.LyricsManagerPro"
+# Dane z Partner Center: Zarzadzanie produktem -> Tozsamosc produktu.
+#
+# Identity Name jest nadawany raz, przy zakladaniu aplikacji, i NIE zmienia sie
+# przy dodawaniu ani zmianie nazw wyswietlanych. Stad zostaje w nim literowka
+# ("Menager") - Partner Center odrzuca pakiet z jakakolwiek inna nazwa,
+# komunikatem "Invalid package identity name ... expected: ...".
+# Nazwa widoczna dla uzytkownikow siedzi w Properties/DisplayName i ta jest
+# poprawna; wymaga tylko, zeby byla zarezerwowana w "Manage app names".
+EXPECTED_NAME = "MarekZettel-zetmar.LyricsMenagerPro"
 EXPECTED_PUBLISHER = "CN=15A53D32-C868-48EE-B700-5DBB5449CA1B"
 EXPECTED_PUBLISHER_DISPLAY = "Marek Zettel - zetmar"
-EXPECTED_PFN = "MarekZettel-zetmar.LyricsManagerPro_411qrz2m02jw4"
+EXPECTED_PFN = "MarekZettel-zetmar.LyricsMenagerPro_411qrz2m02jw4"
 
 NS = {
     "": "http://schemas.microsoft.com/appx/manifest/foundation/windows10",

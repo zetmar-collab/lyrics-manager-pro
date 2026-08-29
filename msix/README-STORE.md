@@ -8,27 +8,43 @@ Wszystko, co potrzebne do wydania Lyrics Manager Pro przez sklep Windows.
 
 | Pole | Wartość |
 |---|---|
-| Package/Identity/Name | `MarekZettel-zetmar.LyricsManagerPro` |
+| Package/Identity/Name | `MarekZettel-zetmar.LyricsMenagerPro` |
 | Package/Identity/Publisher | `CN=15A53D32-C868-48EE-B700-5DBB5449CA1B` |
 | Package/Properties/PublisherDisplayName | `Marek Zettel - zetmar` |
-| Package Family Name | `MarekZettel-zetmar.LyricsManagerPro_411qrz2m02jw4` |
+| Package Family Name | `MarekZettel-zetmar.LyricsMenagerPro_411qrz2m02jw4` |
 | Package SID | `S-1-15-2-2570101063-1518503407-338627846-650014356-1440999148-3067162686-93397780` |
 | Identyfikator w Store | `9MVSV3BRHFTV` |
 | Adres w sklepie | https://apps.microsoft.com/detail/9MVSV3BRHFTV |
 
-> **Nazwa produktu.** Identity Name musi zgadzac sie co do znaku z tym, co
-> Partner Center pokazuje w **Zarzadzanie produktem -> Tozsamosc produktu**,
-> w polu `Package/Identity/Name`. Jesli sie rozjedzie, Partner Center odrzuci
-> pakiet i wysylka nie ruszy.
+> **Dwie rozne nazwy — nie mylic ich ze soba.**
 >
-> Pierwsza rezerwacja zawierala literowke (`LyricsMenagerPro`). Po jej
-> poprawieniu w Partner Center pakiet uzywa juz `LyricsManagerPro`.
+> `Package/Identity/Name` to identyfikator techniczny. Partner Center nadaje go
+> raz, przy zakladaniu aplikacji, i **nie da sie go pozniej zmienic** —
+> dodawanie ani zmiana nazw wyswietlanych nic tu nie robi. Dlatego zostaje
+> w nim literowka: `LyricsMenagerPro`. Proba wyslania pakietu z inna nazwa
+> konczy sie bledem:
+>
+> ```
+> Invalid package identity name: ...LyricsManagerPro
+> (expected: ...LyricsMenagerPro)
+> ```
+>
+> Nikt tego identyfikatora nie oglada. Zeby sie go pozbyc, trzeba zalozyc
+> w Partner Center **nowa aplikacje** — czyli nowy wpis w sklepie, nowy
+> identyfikator Store i utrate dotychczasowych recenzji oraz instalacji.
+> Przy pierwszej publikacji da sie to jeszcze zrobic bez strat.
+>
+> `Package/Properties/DisplayName` to nazwa widoczna dla ludzi — w sklepie,
+> w menu Start i na pasku zadan. Ta jest poprawna: **Lyrics Manager Pro**.
+> Musi byc zarezerwowana w **Zarzadzanie produktem -> Zarzadzaj nazwami
+> aplikacji**, inaczej Partner Center odrzuci pakiet komunikatem
+> „uses a display name that you have not reserved".
 >
 > Skrot wydawcy w Package Family Name (`411qrz2m02jw4`) liczy sie wylacznie
-> z pola `Publisher`, wiec zmiana nazwy go nie rusza.
+> z pola `Publisher`, wiec nazwy go nie ruszaja.
 >
-> Gdyby Partner Center wygenerowal inna nazwe niz zakladamy, nie trzeba
-> ruszac manifestu - wystarczy przebudowac z parametrem:
+> Gdyby kiedys trzeba bylo zbudowac pakiet pod inna tozsamoscia, nie trzeba
+> ruszac manifestu:
 >
 > ```
 > powershell -File msix\build_msix.ps1 -IdentityName "MarekZettel-zetmar.CosInnego"
@@ -74,10 +90,14 @@ Każda kolejna wysyłka musi mieć numer wyższy niż poprzednia.
 dlatego `Publisher` w manifeście to identyfikator z Twojego konta, a nie
 certyfikat, który trzeba by kupić.
 
-1. Partner Center → aplikacja → **Przesyłanie** → **Pakiety**
-2. Przeciągnij `dist\LyricsManagerPro-1.0.0.0.msix`
-3. Uzupełnij pozostałe sekcje (gotowe treści niżej)
-4. Wyślij do certyfikacji
+1. Usuń z listy wszystkie odrzucone pakiety (link **Delete** przy każdym) —
+   bez tego Partner Center nie pozwoli nawet zapisać strony
+2. Partner Center → aplikacja → **Przesyłanie** → **Pakiety**
+3. Przeciągnij `dist\LyricsManagerPro-1.0.0.0.msix`
+4. W sekcji **Device family availability** zaznacz **Windows 10/11 Desktop** —
+   bez tego aplikacja nie trafi do nikogo
+5. Uzupełnij pozostałe sekcje (gotowe treści niżej)
+6. Wyślij do certyfikacji
 
 Certyfikacja trwa zwykle od kilku godzin do trzech dni roboczych.
 

@@ -22,7 +22,7 @@
   IgnorableNamespaces="uap rescap">
 
   <Identity
-    Name="MarekZettel-zetmar.LyricsManagerPro"
+    Name="MarekZettel-zetmar.LyricsMenagerPro"
     Publisher="CN=15A53D32-C868-48EE-B700-5DBB5449CA1B"
     Version="1.0.0.0"
     ProcessorArchitecture="x64" />
